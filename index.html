@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fun Facts Explorer</title>
+  <style>
+    /* ===== Global Styles ===== */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+    }
+
+    /* ===== Category Buttons ===== */
+    .categories {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      margin: 1rem;
+    }
+
+    .categories button {
+      background: #fff;
+      color: #2575fc;
+      border: none;
+      padding: 0.6rem 1rem;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: transform 0.2s, background 0.3s;
+    }
+
+    .categories button:hover {
+      background: #f0f0f0;
+      transform: scale(1.05);
+    }
+
+    /* ===== Fact Card ===== */
+    .fact-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      margin: 1rem auto;
+      padding: 2rem;
+      max-width: 600px;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    .fact-card p {
+      font-size: 1.3rem;
+      line-height: 1.6;
+    }
+
+    /* ===== Discover Button ===== */
+    .discover-btn {
+      display: block;
+      margin: 1rem auto;
+      background: #fff;
+      color: #2575fc;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: bold;
+      transition: transform 0.2s, background 0.3s;
+    }
+
+    .discover-btn:hover {
+      background: #f0f0f0;
+      transform: scale(1.05);
+    }
+
+    /* ===== Footer ===== */
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      background: rgba(0,0,0,0.2);
+      margin-top: auto;
+    }
+
+    /* ===== Animations ===== */
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    /* ===== Responsive Design ===== */
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 2rem;
+      }
+      .fact-card p {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- ===== Header Section ===== -->
+  <header>
+    <h1>Fun Facts Explorer</h1>
+    <p>Discover something amazing every day.</p>
+  </header>
+
+  <!-- ===== Category Buttons ===== -->
+  <div class="categories">
+    <button onclick="setCategory('Science')">Science</button>
+    <button onclick="setCategory('Technology')">Technology</button>
+    <button onclick="setCategory('Animals')">Animals</button>
+    <button onclick="setCategory('Space')">Space</button>
+    <button onclick="setCategory('History')">History</button>
+    <button onclick="setCategory('Human Body')">Human Body</button>
+  </div>
+
+  <!-- ===== Fact Card ===== -->
+  <div class="fact-card" id="fact-card">
+    <p id="fact-text">Click a category or the button below to discover a fun fact!</p>
+  </div>
+
+  <!-- ===== Discover Button ===== -->
+  <button class="discover-btn" onclick="showRandomFact()">Discover Another Fact</button>
+
+  <!-- ===== Footer ===== -->
+  <footer>
+    Built for the #MyFirstWebsite Challenge.
+  </footer>
+
+  <script>
+    /* ===== JavaScript Section =====
+       Purpose: Store facts, handle category selection,
+       and display random facts when buttons are clicked.
+    */
+
+    // Facts database
+    const facts = {
+      "Science": [
+        "Water expands when it freezes, unlike most substances.",
+        "Bananas are berries, but strawberries are not.",
+        "Sharks existed before trees.",
+        "Lightning is five times hotter than the surface of the sun.",
+        "Octopuses have three hearts."
+      ],
+      "Technology": [
+        "The first computer mouse was made of wood.",
+        "Email existed before the World Wide Web.",
+        "The first 1GB hard drive weighed over 500 pounds.",
+        "NASA’s computers in 1969 were less powerful than today’s smartphones.",
+        "The word 'robot' comes from a Czech word meaning 'forced labor'."
+      ],
+      "Animals": [
+        "A group of flamingos is called a 'flamboyance'.",
+        "Sloths can hold their breath longer than dolphins.",
+        "Butterflies taste with their feet.",
+        "Elephants are the only animals that can’t jump.",
+        "Penguins propose with pebbles."
+      ],
+      "Space": [
+        "One day on Venus is longer than one year on Venus.",
+        "Neutron stars can spin 600 times per second.",
+        "Space smells like burnt steak according to astronauts.",
+        "There are more stars in the universe than grains of sand on Earth.",
+        "Jupiter has 79 known moons."
+      ],
+      "History": [
+        "The Great Wall of China is not visible from space with the naked eye.",
+        "Cleopatra lived closer in time to the Moon landing than to the building of the pyramids.",
+        "The Eiffel Tower was originally intended to be temporary.",
+        "The first Olympic Games were held in 776 BC.",
+        "The shortest war in history lasted 38 minutes."
+      ],
+      "Human Body": [
+        "Your stomach gets a new lining every 3 to 4 days.",
+        "Humans share 60% of their DNA with bananas.",
+        "The human nose can detect over 1 trillion scents.",
+        "Your bones are stronger than steel by weight.",
+        "You have more bacteria in your body than human cells."
+      ]
+    };
+
+    let currentCategory = null;
+
+    // Function to set category
+    function setCategory(category) {
+      currentCategory = category;
+      showRandomFact();
+    }
+
+    // Function to show random fact
+    function showRandomFact() {
+      if (!currentCategory) {
+        document.getElementById("fact-text").innerText = "Please select a category first!";
+        return;
+      }
+      const categoryFacts = facts[currentCategory];
+      const randomIndex = Math.floor(Math.random() * categoryFacts.length);
+      document.getElementById("fact-text").innerText = categoryFacts[randomIndex];
+    }
+  </script>
+</body>
+  </html>
